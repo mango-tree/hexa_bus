@@ -1,8 +1,15 @@
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const webpack = require("webpack");
 
 const extractSass = new ExtractTextPlugin({
     filename: "[name].css",
     disable: process.env.NODE_ENV === "development"
+});
+
+const uglify = new webpack.optimize.UglifyJsPlugin({
+    compress: {
+        warnings: false
+    }
 });
 
 module.exports = [
@@ -18,6 +25,7 @@ module.exports = [
 
         devServer: {
             inline: true,
+            disableHostCheck: true,
             port: 7777,
             contentBase: __dirname + '/public/'
         },
@@ -37,6 +45,9 @@ module.exports = [
 
             ]
         },
+        plugins: [
+            uglify
+        ],
     },
     {
         entry: {
